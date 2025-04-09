@@ -5,7 +5,7 @@ export default function Header() {
 				<div className="flex items-center justify-between">
 					<div className="flex items-center">
 						<div className="mr-4">
-							<div className="font-bold text-2xl tracking-wider text-white">SAURON OS</div>
+							<div className="font-bold text-2xl tracking-wider text-white">SAURON VIGILANCE OS</div>
 							<div className="text-xs text-blue-400 font-mono">Facial Detabase</div>
 						</div>
 						<div className="h-8 w-[1px] bg-blue-800 mx-4 hidden sm:block"></div>

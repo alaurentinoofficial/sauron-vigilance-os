@@ -8,6 +8,9 @@ import { Shield, AlertTriangle } from "lucide-react"
 import Header from "@/components/header"
 import ResultsPanel from "@/components/results-panel"
 
+// Get API URL from environment variable or use default
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
 export default function Home() {
 	const [imageData, setImageData] = useState<string | null>(null)
 	const [isProcessing, setIsProcessing] = useState(false)
@@ -29,7 +32,7 @@ export default function Home() {
 			const formData = new FormData();
 			formData.append('image', blob, 'capture.jpg');
 
-			const response = await axios.post('http://localhost:8000/upload-image/', formData, {
+			const response = await axios.post(`${API_URL}/upload-image/`, formData, {
 				headers: {
 					'Content-Type': 'multipart/form-data',
 				},

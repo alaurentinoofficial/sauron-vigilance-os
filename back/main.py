@@ -304,7 +304,7 @@ def fetch_suspect_database_by_id(id: int, confidence: float) -> Suspect:
         return {"name": "UNKNOWN", "threatLevel": "UNKNOWN", "crimes": [], "confidence": 0}
 
 
-model_path = './Face Recognition Model.pth'
+model_path = './model.pth'
 num_classes = 12
 
 if not os.path.exists(model_path):
