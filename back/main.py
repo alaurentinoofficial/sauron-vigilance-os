@@ -305,7 +305,7 @@ def fetch_suspect_database_by_id(id: int, confidence: float) -> Suspect:
 
 
 model_path = './model.pth'
-num_classes = 12
+num_classes = 3
 
 if not os.path.exists(model_path):
     print(f"Error: Model file not found at {model_path}")
