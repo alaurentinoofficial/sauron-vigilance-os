@@ -74,7 +74,6 @@ export default function Home() {
 								<div className="h-2 w-2 rounded-full bg-blue-500 mr-2"></div>
 								<h3 className="text-sm font-mono uppercase tracking-wider text-blue-500">Surveillance Feed</h3>
 							</div>
-							<div className="text-xs font-mono text-blue-400">{new Date().toLocaleTimeString()} | SECURE CHANNEL</div>
 						</div>
 						<div className="p-4" style={{ minHeight: "350px" }}>
 							<CameraCapture onCapture={handleCapture} />

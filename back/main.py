@@ -296,9 +296,9 @@ class Suspect(TypedDict):
 def fetch_suspect_database_by_id(id: int, confidence: float) -> Suspect:
     if id == 0:
         return {"name": "João Matheus", "threatLevel": "CRITICAL", "crimes": ["insider trading", "fraud"], "confidence": confidence}
-    elif id == 1:
+    elif id == 2:
         return {"name": "Anderson Laurentino", "threatLevel": "CRITICAL", "crimes": ["hacking", "identity theft"], "confidence": confidence}
-    elif id == 3:
+    elif id == 1:
         return {"name": "Helton Alves", "threatLevel": "CRITICAL", "crimes": ["vandalism", "robbery"], "confidence": confidence}
     else:
         return {"name": "UNKNOWN", "threatLevel": "UNKNOWN", "crimes": [], "confidence": 0}
