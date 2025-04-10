@@ -11,6 +11,8 @@ import random
 
 import torch.nn.functional as F
 
+import torch.nn.functional as F
+
 class FaceRecognitionModel(nn.Module):
     def __init__(self, num_classes, latent_dim=512):
         super(FaceRecognitionModel, self).__init__()
@@ -18,25 +20,23 @@ class FaceRecognitionModel(nn.Module):
         # Load pre-trained ResNet50 as encoder
         resnet = models.resnet50(pretrained=True)
         self.encoder = nn.Sequential(*list(resnet.children())[:-1])
-
-        # Freeze encoder
         for param in self.encoder.parameters():
             param.requires_grad = False
 
         # Decoder
-        self.fc1 = nn.Linear(2048, latent_dim)
-        self.bn1 = nn.BatchNorm1d(latent_dim)
+        self.fc1 = nn.Linear(2048, 1024)
+        self.bn1 = nn.BatchNorm1d(1024)
         self.dropout1 = nn.Dropout(0.5)
 
-        self.fc2 = nn.Linear(latent_dim, latent_dim)
-        self.bn2 = nn.BatchNorm1d(latent_dim)
+        self.fc2 = nn.Linear(1024, 1024)
+        self.bn2 = nn.BatchNorm1d(1024)
         self.dropout2 = nn.Dropout(0.4)
 
-        self.fc3 = nn.Linear(latent_dim, latent_dim // 2)
-        self.bn3 = nn.BatchNorm1d(latent_dim // 2)
+        self.fc3 = nn.Linear(1024, 256)
+        self.bn3 = nn.BatchNorm1d(256)
         self.dropout3 = nn.Dropout(0.3)
 
-        self.output = nn.Linear(latent_dim // 2, num_classes)
+        self.output = nn.Linear(256, num_classes)
 
     def forward(self, x):
         x = self.encoder(x)
