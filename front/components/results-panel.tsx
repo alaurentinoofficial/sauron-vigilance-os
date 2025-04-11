@@ -1,16 +1,17 @@
+import React from "react"
 import { Card } from "@/components/ui/card"
 import { AlertTriangle, FileText, User, Shield, Clock } from "lucide-react"
 
 interface ResultsPanelProps {
 	imageData: string | null
 	isProcessing: boolean
-	person: Suspect | undefined
+	persons: Suspect[]
 }
 
-export default function ResultsPanel({ imageData, person, isProcessing }: ResultsPanelProps) {
+export default function ResultsPanel({ imageData, persons, isProcessing }: ResultsPanelProps) {
 	// Get threat level color
-	const getThreatColor = () => {
-		switch (person?.threatLevel) {
+	const getThreatColor = (threatLevel: string) => {
+		switch (threatLevel) {
 			case "LOW":
 				return "text-green-500"
 			case "MODERATE":
@@ -25,8 +26,8 @@ export default function ResultsPanel({ imageData, person, isProcessing }: Result
 	}
 
 	// Get threat level border color
-	const getThreatBorderColor = () => {
-		switch (person?.threatLevel) {
+	const getThreatBorderColor = (threatLevel: string) => {
+		switch (threatLevel) {
 			case "LOW":
 				return "border-green-500"
 			case "MODERATE":
@@ -74,40 +75,44 @@ export default function ResultsPanel({ imageData, person, isProcessing }: Result
 							</div>
 						</div>
 					</div>
-				) : person ? (
-					<div className={`border rounded p-4 bg-gray-950 ${getThreatBorderColor()}`}>
-						<div className="flex justify-between items-start mb-4">
-							<div className="flex items-center">
-								<User className="h-5 w-5 text-blue-500 mr-2" />
-								<h4 className="font-mono text-white">SUBJECT IDENTIFIED</h4>
+				) : persons.length > 0 ? (
+					<div className="space-y-4">
+						{persons.map((person, index) => (
+							<div key={index} className={`border rounded p-4 bg-gray-950 ${getThreatBorderColor(person.threatLevel)}`}>
+								<div className="flex justify-between items-start mb-4">
+									<div className="flex items-center">
+										<User className="h-5 w-5 text-blue-500 mr-2" />
+										<h4 className="font-mono text-white">SUBJECT IDENTIFIED</h4>
+									</div>
+									<div
+										className={`px-2 py-1 rounded font-mono text-xs ${getThreatColor(person.threatLevel)} border ${getThreatBorderColor(person.threatLevel)}`}
+									>
+										THREAT LEVEL: {person.threatLevel}
+									</div>
+								</div>
+
+								<div className="space-y-3 font-mono">
+									<div className="grid grid-cols-2 gap-2 text-xs">
+										<div className="text-blue-400">NAME:</div>
+										<div className="text-white uppercase">{person.name}</div>
+
+										<div className="text-blue-400">DATABASE MATCH:</div>
+										<div className="text-white">{Math.round(person.confidence*100)/100}%</div>
+
+										<div className="text-blue-400">LAST SEEN:</div>
+										<div className="text-white">{new Date().toLocaleDateString()}</div>
+
+										<div className="text-blue-400">CRIMES:</div>
+										<div className="text-white">{person.crimes.join(", ")}</div>
+									</div>
+
+									<div className="pt-2 border-t border-blue-900 mt-2 flex items-center">
+										<AlertTriangle className="h-4 w-4 text-yellow-500 mr-1" />
+										<span className="text-yellow-500 text-xs">FURTHER INVESTIGATION REQUIRED</span>
+									</div>
+								</div>
 							</div>
-							<div
-								className={`px-2 py-1 rounded font-mono text-xs ${getThreatColor()} border ${getThreatBorderColor()}`}
-							>
-								THREAT LEVEL: {person.threatLevel}
-							</div>
-						</div>
-
-						<div className="space-y-3 font-mono">
-							<div className="grid grid-cols-2 gap-2 text-xs">
-								<div className="text-blue-400">NAME:</div>
-								<div className="text-white uppercase">{person.name}</div>
-
-								<div className="text-blue-400">DATABASE MATCH:</div>
-								<div className="text-white">{Math.round(person.confidence*100)/100}%</div>
-
-								<div className="text-blue-400">LAST SEEN:</div>
-								<div className="text-white">{new Date().toLocaleDateString()}</div>
-
-								<div className="text-blue-400">CRIMES:</div>
-								<div className="text-white">{person.crimes.join(", ")}</div>
-							</div>
-
-							<div className="pt-2 border-t border-blue-900 mt-2 flex items-center">
-								<AlertTriangle className="h-4 w-4 text-yellow-500 mr-1" />
-								<span className="text-yellow-500 text-xs">FURTHER INVESTIGATION REQUIRED</span>
-							</div>
-						</div>
+						))}
 					</div>
 				) : imageData ? (
 					<div className="border border-blue-900 rounded p-4 bg-gray-950">
@@ -131,16 +136,16 @@ export default function ResultsPanel({ imageData, person, isProcessing }: Result
 					<div className="space-y-1 text-xs font-mono text-gray-400">
 						<p>[{new Date().toLocaleTimeString()}] System initialized</p>
 						{imageData && <p>[{new Date().toLocaleTimeString()}] Subject image captured</p>}
-						{person && (
-							<p>
-								[{new Date().toLocaleTimeString()}] Subject identified: {person.name}
-							</p>
-						)}
-						{person && (
-							<p>
-								[{new Date().toLocaleTimeString()}] Threat assessment: {person.threatLevel}
-							</p>
-						)}
+						{persons.map((person, index) => (
+							<React.Fragment key={index}>
+								<p>
+									[{new Date().toLocaleTimeString()}] Subject identified: {person.name}
+								</p>
+								<p>
+									[{new Date().toLocaleTimeString()}] Threat assessment: {person.threatLevel}
+								</p>
+							</React.Fragment>
+						))}
 					</div>
 				</div>
 			</div>

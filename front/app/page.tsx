@@ -14,7 +14,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 export default function Home() {
 	const [imageData, setImageData] = useState<string | null>(null)
 	const [isProcessing, setIsProcessing] = useState(false)
-	const [person, setPerson] = useState<Suspect | undefined>(undefined)
+	const [persons, setPersons] = useState<Suspect[]>([])
 
 	const handleCapture = (imageSrc: string) => {
 		setImageData(imageSrc)
@@ -40,12 +40,11 @@ export default function Home() {
 
 			const data = response.data as Suspect[];
 
-			if(data.length > 0)
-				setPerson(data[0])
-			else
-				setPerson(undefined)
+			console.log("suspects", data)
+			setPersons(data)
 		} catch (error) {
 			console.error("Error processing image:", error)
+			setPersons([])
 		} finally {
 			setIsProcessing(false)
 		}
@@ -82,7 +81,7 @@ export default function Home() {
 
 					<ResultsPanel
 						imageData={imageData}
-						person={person}
+						persons={persons}
 						isProcessing={isProcessing}
 					/>
 				</div>
